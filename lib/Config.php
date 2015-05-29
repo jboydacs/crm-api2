@@ -8,9 +8,9 @@
 
 class Config {
 
-    private $user;
-    private $url;
-    private $key;
+    protected $user;
+    protected $url;
+    protected $key;
 
     public function __construct($user = null, $url = null, $key = null) {
         $this->user = $user;

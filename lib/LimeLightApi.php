@@ -1,13 +1,16 @@
 <?php
 
 include_once 'Api.php';
+include_once 'LimeLightConfig.php';
 include_once './exceptions/FailedToConnectException.php';
+include_once './exceptions/RequestMethodNotFoundException.php';
+include_once './exceptions/ApiCallFailedException.php';
 
 class LimeLightApi extends Api {
     private $config;
+    private $requestData;
 
-    public function __construct($config = null, $method = null) {
-        parent::__construct($config);
+    public function __construct(LimeLightConfig $config = null) {
         $this->config = $config;
     }
 
@@ -18,16 +21,21 @@ class LimeLightApi extends Api {
         $this->{$prop} = $value;
     }
 
-    public function connect($data) {
+    public function connect() {
 
-        $data['username'] = $this->config->user;
-        $data['password'] = $this->config->key;
+        if (!$this->hasRequestMethod()) {
+            throw new RequestMethodNotFoundException('Request Method Not Found');
+        }
+
+        $this->requestData['username'] = $this->config->user;
+        $this->requestData['password'] = $this->config->key;
+
         try {
             $curlSession = curl_init();
             curl_setopt($curlSession, CURLOPT_URL, $this->config->url);
             curl_setopt($curlSession, CURLOPT_HEADER, 0);
             curl_setopt($curlSession, CURLOPT_POST, 1);
-            curl_setopt($curlSession, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curlSession, CURLOPT_POSTFIELDS, http_build_query($this->requestData));
             curl_setopt($curlSession, CURLOPT_RETURNTRANSFER,1);
             curl_setopt($curlSession, CURLOPT_TIMEOUT,5000);
             curl_setopt($curlSession, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -37,9 +45,7 @@ class LimeLightApi extends Api {
 
             // Check that a connection was made
             if (curl_error($curlSession)){
-                // If it wasn't...
-                $output['Status'] = "FAIL";
-                $output['StatusDetail'] = curl_error($curlSession);
+                throw new ApiCallFailedException('Api Call Failed');
             }
 
             curl_close ($curlSession);
@@ -48,6 +54,9 @@ class LimeLightApi extends Api {
         }catch (Exception $e) {
             throw new FailedToConnectException('Failed to connect to the api');
         }
+    }
 
+    private function hasRequestMethod() {
+        return array_key_exists('method', $this->requestData);
     }
 }

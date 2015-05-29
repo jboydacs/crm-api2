@@ -53,6 +53,16 @@ class LimeLightApiService implements ApiService {
         return null;
     }
 
+    public function cookIt($data) {
+        if (is_array($data) && array_key_exists('ordersIds', $data)) {
+            // TODO: process order ids here
+            return 'Orders processed';
+        } else {
+            // TODO: Log
+            return $data;
+        }
+    }
+
     private function didNotReachedServer($data) {
         return !array_key_exists('response_code', $data);
     }

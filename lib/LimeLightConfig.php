@@ -1,10 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: gwdev1
- * Date: 5/29/15
- * Time: 11:13 PM
- */
+<?php 
 
 include_once 'Config.php';
 

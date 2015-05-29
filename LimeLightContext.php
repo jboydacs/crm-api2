@@ -24,9 +24,9 @@ class LimeLightContext {
             'end_date' => '05/30/2015',
             'end_time' => '23:59:59',
             'search_type' => 'any',
-            'return_type' => '',
-            'method' => 'order_find'
+            'return_type' => ''
         );
+        $data['method'] = $action;
 
         $ll = new LimeLightApi($this->config);
         $ll->requestData = $data;

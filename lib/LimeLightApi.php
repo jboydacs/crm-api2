@@ -6,10 +6,24 @@ include_once './exceptions/FailedToConnectException.php';
 include_once './exceptions/RequestMethodNotFoundException.php';
 include_once './exceptions/ApiCallFailedException.php';
 
+/**
+ * Class LimeLightApi - for interacting with Limelight CRM api
+ */
+
 class LimeLightApi extends Api {
+    /**
+     * @var
+     */
     private $config;
+
+    /**
+     * @var
+     */
     private $requestData;
 
+    /**
+     * @param Config $config - api configuration implementation of Limelight
+     */
     public function __construct(Config $config = null) {
         $this->config = $config;
     }
@@ -21,6 +35,11 @@ class LimeLightApi extends Api {
         $this->{$prop} = $value;
     }
 
+    /**
+     * @return mixed
+     * @throws FailedToConnectException
+     * @throws RequestMethodNotFoundException
+     */
     public function connect() {
 
         if (!$this->hasRequestMethod()) {
@@ -56,6 +75,9 @@ class LimeLightApi extends Api {
         }
     }
 
+    /**
+     * @return bool - check if api parameters includes method field
+     */
     private function hasRequestMethod() {
         return array_key_exists('method', $this->requestData);
     }

@@ -5,14 +5,27 @@ include_once 'lib/LimeLightApi.php';
 include_once 'services/LimeLightApiService.php';
 include_once 'services/OrderService.php';
 
+/**
+ * Class LimeLightContext - for testing Limelight CRM API
+ */
 class LimeLightContext {
-    // wiring
+    /**
+     * @var Config
+     */
     private $config;
 
+    /**
+     * @param Config $config
+     */
     public function __construct(Config $config) {
         $this->config = $config;
     }
 
+    /**
+     * @param $action
+     * @return string
+     * Trigger api test
+     */
     public function fire($action) {
         $data = array(
             'campaign_id' => 'all',

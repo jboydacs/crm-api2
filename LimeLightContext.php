@@ -6,7 +6,7 @@ include_once 'services/LimeLightApiService.php';
 include_once 'services/OrderService.php';
 
 /**
- * Class LimeLightContext - for testing Limelight CRM API
+ * Class for testing Limelight CRM API
  */
 class LimeLightContext {
     /**

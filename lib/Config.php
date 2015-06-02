@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Class Config - holds the basic configuration/credentials of API classes. Must to be extended
+ * Holds the basic configuration/credentials of API classes. Must to be extended
+ *
  */
 class Config {
 
@@ -20,9 +21,9 @@ class Config {
     protected $key;
 
     /**
-     * @param null $user
-     * @param null $url
-     * @param null $key
+     * @param $user
+     * @param $url
+     * @param $key
      */
     public function __construct($user = null, $url = null, $key = null) {
         $this->user = $user;

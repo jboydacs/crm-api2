@@ -7,7 +7,7 @@ include_once './exceptions/RequestMethodNotFoundException.php';
 include_once './exceptions/ApiCallFailedException.php';
 
 /**
- * Class LimeLightApi - for interacting with Limelight CRM api
+ * For interacting with Limelight CRM api
  */
 
 class LimeLightApi extends Api {

@@ -9,9 +9,9 @@ include_once 'Config.php';
 class LimeLightConfig extends Config {
 
     /**
-     * @param null $user
-     * @param null $url
-     * @param null $key
+     * @param $user
+     * @param $url
+     * @param $key
      */
     public function __construct($user, $url, $key) {
         parent::__construct($user, $url, $key);

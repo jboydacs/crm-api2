@@ -3,7 +3,7 @@
 include_once 'ApiService.php';
 
 /**
- * Class LimeLightApiService - concrete implement of APIService for Limelight. This caters all Limelight method calls
+ * Concrete implementation of APIService for Limelight. This caters all Limelight method calls
  * and data processing
  */
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class OrderService - service for processing orders coming from the limelight CRM
+ * Service for processing orders coming from the limelight CRM
  */
 
 class OrderService {
@@ -10,7 +10,7 @@ class OrderService {
     /**
      * @param $data
      * @return string
-     * For cooking orders
+     *
      */
     public function cook($data) {
         if (is_array($data) && array_key_exists('orderIds', $data)) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Interface ApiService - will be implemented by all API services
+ * Will be implemented by all API services
  */
 
 interface ApiService {

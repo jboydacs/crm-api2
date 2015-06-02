@@ -1,15 +1,19 @@
 <?php
 
 /**
- * Class Api - base class of all api classes
+ * Api base class
+ *
+ *
  *
  */
 
 abstract class Api {
 
     /**
-     * @return mixed
      * Abstract method to be implemented by concrete classes
+     *
+     * @return mixed
+     *
      */
     public abstract function connect();
 }

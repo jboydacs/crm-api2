@@ -1,7 +1,7 @@
 <?php
 
 include_once 'Api.php';
-include_once 'LimeLightConfig.php';
+include_once 'Config.php';
 include_once './exceptions/FailedToConnectException.php';
 include_once './exceptions/RequestMethodNotFoundException.php';
 include_once './exceptions/ApiCallFailedException.php';
@@ -10,7 +10,7 @@ class LimeLightApi extends Api {
     private $config;
     private $requestData;
 
-    public function __construct(LimeLightConfig $config = null) {
+    public function __construct(Config $config = null) {
         $this->config = $config;
     }
 

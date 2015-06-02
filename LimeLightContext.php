@@ -1,22 +1,20 @@
 <?php
 
-
-include_once 'lib/LimeLightApi.php';
 include_once 'lib/Config.php';
+include_once 'lib/LimeLightApi.php';
 include_once 'services/LimeLightApiService.php';
+include_once 'services/OrderService.php';
 
 class LimeLightContext {
     // wiring
     private $config;
-    private $service;
 
-    public function __construct(LimeLightConfig $config, LimeLightApiService $service) {
+    public function __construct(Config $config) {
         $this->config = $config;
-        $this->service = $service;
     }
 
     public function fire($action) {
-        $data = Array(
+        $data = array(
             'campaign_id' => 'all',
             'criteria' => 'all',
             'start_date' => '05/27/2015',
@@ -28,12 +26,14 @@ class LimeLightContext {
         );
         $data['method'] = $action;
 
-        $ll = new LimeLightApi($this->config);
-        $ll->requestData = $data;
-        $result = $ll->connect();
-        $s = new LimeLightApiService($ll->requestData['method']);
+        $api = new LimeLightApi($this->config);
+        $api->requestData = $data;
 
-        $orders = $s->prettify($result);
-        return $s->cookIt($orders);
+        $apiService = new LimeLightApiService($api);
+        $apiService->connect();
+        $orders = $apiService->prettify($action);
+
+        $orderService = new OrderService();
+        return $orderService->cook($orders);
     }
 }

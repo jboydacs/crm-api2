@@ -3,42 +3,39 @@
 include_once 'ApiService.php';
 
 class LimeLightApiService implements ApiService {
-    private $method;
+    private $api;
+    private $responseData;
 
-    public function __construct($method = null) {
-        $this->method = $method;
+    public function __construct(Api $api) {
+        $this->api = $api;
     }
 
-    public function __get($prop) {
-        return $this->{$prop};
-    }
-    public function __set($prop, $value = null) {
-        $this->{$prop} = $value;
+    public function connect() {
+        $this->responseData = $this->api->connect();
     }
 
-    private function apiMethodToCamelCase() {
-        $str = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->method)));
-        return lcfirst($str);
+    public function getResponse() {
+        return $this->responseData;
     }
 
-    public function prettify($responseData) {
+    public function prettify($action) {
         // dynamic function name here
-        $function = $this->apiMethodToCamelCase();
-        return $this->$function($responseData);
+        $function = $this->apiMethodToCamelCase($action);
+        return $this->$function();
     }
+
 
     /**
-     * @param $responseData
      * @return Exception|null|array
      */
-    public function orderFind($responseData) {
+    private function orderFind() {
         try {
-            parse_str($responseData, $data);
+            parse_str($this->responseData, $data);
             if ($this->didNotReachedServer($data)) return key($data);
 
             if ($this->isRequestSuccessful($data)) {
 
-                return ['ordersIds' => explode(',', $data['order_ids'])];
+                return ['orderIds' => explode(',', $data['order_ids'])];
 
             } else if ($this->isParsedDataHasErrors($data)) {
 
@@ -53,14 +50,9 @@ class LimeLightApiService implements ApiService {
         return null;
     }
 
-    public function cookIt($data) {
-        if (is_array($data) && array_key_exists('ordersIds', $data)) {
-            // TODO: process order ids here
-            return 'Orders processed';
-        } else {
-            // TODO: Log
-            return $data;
-        }
+    private function apiMethodToCamelCase($action) {
+        $str = str_replace(' ', '', ucwords(str_replace('_', ' ', $action)));
+        return lcfirst($str);
     }
 
     private function didNotReachedServer($data) {

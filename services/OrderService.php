@@ -1,10 +1,12 @@
 <?php
 
+include_once 'CrmService.php';
+
 /**
  * Service for processing orders coming from the limelight CRM
  */
 
-class OrderService {
+class OrderService implements CrmService {
 
 
     /**

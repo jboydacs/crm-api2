@@ -28,4 +28,9 @@ interface LimeLightApiService extends ApiService {
      * @return mixed
      */
     public function prospectView();
+
+    /**
+     * @return mixed
+     */
+    public function campaignView();
 }

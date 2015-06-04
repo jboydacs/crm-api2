@@ -128,6 +128,11 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
             parse_str($this->responseData, $data);
             if ($this->didNotReachedServer($data)) return key($data);
 
+            if (array_key_exists('data', $data)) { // multiple orders
+                $orders = json_decode($data['data']);
+                $data['data'] = $orders;
+            }
+
             if ($this->isRequestSuccessful($data)) {
 
                 return $data;

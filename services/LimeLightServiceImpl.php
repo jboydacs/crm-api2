@@ -171,4 +171,30 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
         }
         return null;
     }
+
+    /**
+     * @return mixed
+     */
+    public function prospectView()
+    {
+        try {
+            parse_str($this->responseData, $data);
+            if ($this->didNotReachedServer($data)) return key($data);
+
+            if ($this->isRequestSuccessful($data)) {
+
+                return $data;
+
+            } else if ($this->isParsedDataHasErrors($data)) {
+
+                return $data['error_message'];
+
+            } else {    // unknown stuffs
+                return $data;
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+        return null;
+    }
 }

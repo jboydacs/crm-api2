@@ -118,4 +118,30 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
     private function isParsedDataHasErrors($data) {
         return array_key_exists('error_message', $data);
     }
+
+    /**
+     * @return mixed
+     */
+    public function orderView()
+    {
+        try {
+            parse_str($this->responseData, $data);
+            if ($this->didNotReachedServer($data)) return key($data);
+
+            if ($this->isRequestSuccessful($data)) {
+
+                return $data;
+
+            } else if ($this->isParsedDataHasErrors($data)) {
+
+                return $data['error_message'];
+
+            } else {    // unknown stuffs
+                return $data;
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+        return null;
+    }
 }

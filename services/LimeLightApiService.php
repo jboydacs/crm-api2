@@ -13,4 +13,9 @@ interface LimeLightApiService extends ApiService {
      * @return mixed
      */
     public function orderFind();
+
+    /**
+     * @return mixed
+     */
+    public function orderView();
 }

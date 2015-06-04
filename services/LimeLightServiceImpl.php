@@ -64,7 +64,7 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
             parse_str($this->responseData, $data);
             if ($this->didNotReachedServer($data)) return key($data);
 
-            if ($this->isRequestSuccessful($data)) {
+            if ($this->isRequestSuccessful($data) && array_key_exists('order_ids', $data)) {
 
                 return ['orderIds' => explode(',', $data['order_ids'])];
 
@@ -105,9 +105,7 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
      * Check if Limelight api call is ok. 100 response code means success
      */
     private function isRequestSuccessful($data) {
-        return  is_array($data) &&
-        $data['response_code'] === '100' &&
-        array_key_exists('total_orders', $data);
+        return  is_array($data) && $data['response_code'] === '100';
     }
 
     /**
@@ -128,14 +126,38 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
             parse_str($this->responseData, $data);
             if ($this->didNotReachedServer($data)) return key($data);
 
-            if (array_key_exists('data', $data)) { // multiple orders
-                $orders = json_decode($data['data']);
-                $data['data'] = $orders;
-            }
-
             if ($this->isRequestSuccessful($data)) {
-
+                if (array_key_exists('data', $data)) { // multiple orders
+                    $orders = json_decode($data['data']);
+                    $data['data'] = $orders;
+                }
                 return $data;
+
+            } else if ($this->isParsedDataHasErrors($data)) {
+
+                return $data['error_message'];
+
+            } else {    // unknown stuffs
+                return $data;
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+        return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function prospectFind()
+    {
+        try {
+            parse_str($this->responseData, $data);
+            if ($this->didNotReachedServer($data)) return key($data);
+
+            if ($this->isRequestSuccessful($data) && array_key_exists('prospect_ids', $data)) {
+
+                return ['prospectIds' => explode(',', $data['prospect_ids'])];
 
             } else if ($this->isParsedDataHasErrors($data)) {
 

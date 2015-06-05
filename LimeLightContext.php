@@ -34,7 +34,6 @@ class LimeLightContext {
         // then call the generated function; returns an array which a parse api response
         $orders = $this->api->$function();
 
-
         // process data
         $orderService = new OrderService();
         return $orderService->cook($orders);

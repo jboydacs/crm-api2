@@ -1,10 +1,11 @@
 <?php
 
 require_once 'LimeLight.php';
-require_once '../helpers/response_checker.php';
+require_once './helpers/response_checker.php';
 
 
 class Transaction extends LimeLight {
+
     /**
      * @param Config $config - api configuration implementation of Limelight
      */

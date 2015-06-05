@@ -1,0 +1,26 @@
+<?php
+
+require_once 'LimeLightContext.php';
+require_once 'lib/Membership.php';
+require_once 'lib/LimeLightConfig.php';
+
+
+$data = [
+        'campaign_id' => '3',
+        'criteria' => '',
+        'start_date' => '05/20/2011',
+        'start_time' => '00:00:00',
+        'end_date' => '06/27/2015',
+        'end_time' => '23:59:59',
+        'search_type' => 'any',
+        'return_type' => '',
+        'method' => 'prospect_find'
+        ];
+
+$config = new LimeLightConfig('verticalops', 'https://www.b7mediacenter.com/admin/', 'dbZvTaaHbzRcD');
+
+$limelight = new Membership($config);
+$limelight->requestData = $data;
+
+$context = new LimeLightContext($limelight);
+$context->test();

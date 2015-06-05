@@ -1,7 +1,8 @@
 <?php
 
-include_once 'services/ApiService.php';
-include_once 'services/OrderService.php';
+require_once './lib/Api.php';
+require_once './helpers/utils.php';
+require_once 'services/OrderService.php';
 
 /**
  * Class for testing Limelight CRM API
@@ -9,16 +10,16 @@ include_once 'services/OrderService.php';
 class LimeLightContext {
 
     /**
-     * @var LimeLightApiService
+     * @var LimeLight
      */
-    private $apiService;
+    private $api;
 
     /**
      * @param Config $config
      * @param ApiService $apiService
      */
-    public function __construct(ApiService $apiService) {
-        $this->apiService = $apiService;
+    public function __construct(LimeLight $api) {
+        $this->api = $api;
     }
 
     /**
@@ -26,9 +27,15 @@ class LimeLightContext {
      * @return string Trigger api test
      */
     public function test() {
-        $rawResponse = $this->apiService->connect();
-        $orders = $this->apiService->prettify();
+        // trigger api call
+        $this->api->connect();
+        // generate dynamic function of the given api method
+        $function = $this->api->evalMethod();
+        // then call the generated function; returns an array which a parse api response
+        $orders = $this->api->$function();
 
+
+        // process data
         $orderService = new OrderService();
         return $orderService->cook($orders);
     }

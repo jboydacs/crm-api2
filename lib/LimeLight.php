@@ -1,7 +1,9 @@
 <?php
 
-include_once 'Api.php';
+include_once 'CRMApi.php';
 include_once 'Config.php';
+include_once './helpers/utils.php';
+include_once './helpers/response_checker.php';
 include_once './exceptions/FailedToConnectException.php';
 include_once './exceptions/RequestMethodNotFoundException.php';
 include_once './exceptions/ApiCallFailedException.php';
@@ -10,7 +12,7 @@ include_once './exceptions/ApiCallFailedException.php';
  * For interacting with Limelight CRM api
  */
 
-class LimeLightApi extends Api {
+class LimeLight extends CRMApi {
     /**
      * @var
      */
@@ -20,6 +22,12 @@ class LimeLightApi extends Api {
      * @var
      */
     private $requestData;
+
+
+    /**
+     * @var result of API call
+     */
+    protected $responseData;
 
     /**
      * @param Config $config - api configuration implementation of Limelight
@@ -42,7 +50,7 @@ class LimeLightApi extends Api {
      */
     public function connect() {
 
-        if (!$this->hasRequestMethod()) {
+        if (!hasRequestMethod($this->requestData)) {
             throw new RequestMethodNotFoundException('Request Method Not Found');
         }
 
@@ -60,7 +68,7 @@ class LimeLightApi extends Api {
             curl_setopt($curlSession, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($curlSession, CURLOPT_SSL_VERIFYHOST, 2);
 
-            $response = curl_exec($curlSession);
+            $this->responseData = curl_exec($curlSession);
 
             // Check that a connection was made
             if (curl_error($curlSession)){
@@ -68,7 +76,6 @@ class LimeLightApi extends Api {
             }
 
             curl_close ($curlSession);
-            return $response;
 
         }catch (Exception $e) {
             throw new FailedToConnectException('Failed to connect to the api');
@@ -76,9 +83,11 @@ class LimeLightApi extends Api {
     }
 
     /**
-     * @return bool - check if api parameters includes method field
+     * @return mixed
+     * Format response data according to the action/method provided
      */
-    private function hasRequestMethod() {
-        return array_key_exists('method', $this->requestData);
+    public function evalMethod() {
+        // dynamic function name here
+        return apiMethodToCamelCase($this->requestData['method']);
     }
 }

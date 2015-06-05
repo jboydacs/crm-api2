@@ -25,7 +25,7 @@ class LimeLightContext {
      * Trigger api test
      * @return string Trigger api test
      */
-    public function testOrders() {
+    public function test() {
         $rawResponse = $this->apiService->connect();
         $orders = $this->apiService->prettify();
 

@@ -1,16 +1,14 @@
 <?php
 
+include_once 'LimeLightApi.php';
 
-/**
- * For posting data to Limelight CRM
- */
 
 class Transaction extends LimeLightApi {
     /**
      * @param Config $config - api configuration implementation of Limelight
      */
     public function __construct(Config $config = null) {
-        $config->url .= 'transaction.php';
+        $config->url .= 'transact.php';
         parent::__construct($config);
     }
 }

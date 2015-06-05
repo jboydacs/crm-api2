@@ -96,7 +96,7 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
      * Check if the api call successfully reached the server
      */
     private function didNotReachedServer($data) {
-        return !array_key_exists('response_code', $data);
+        return !(array_key_exists('response_code', $data) || array_key_exists('responseCode', $data));
     }
 
     /**
@@ -105,7 +105,7 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
      * Check if Limelight api call is ok. 100 response code means success
      */
     private function isRequestSuccessful($data) {
-        return  is_array($data) && $data['response_code'] === '100';
+        return  is_array($data) && ($data['response_code'] === '100' || $data['responseCode'] === '100');
     }
 
     /**
@@ -203,6 +203,32 @@ class LimeLightApiServiceImpl implements LimeLightApiService {
      * @return mixed
      */
     public function campaignView()
+    {
+        try {
+            parse_str($this->responseData, $data);
+            if ($this->didNotReachedServer($data)) return key($data);
+
+            if ($this->isRequestSuccessful($data)) {
+
+                return $data;
+
+            } else if ($this->isParsedDataHasErrors($data)) {
+
+                return $data['error_message'];
+
+            } else {    // unknown stuffs
+                return $data;
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+        return null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function newOrder()
     {
         try {
             parse_str($this->responseData, $data);

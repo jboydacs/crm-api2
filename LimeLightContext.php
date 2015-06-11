@@ -31,7 +31,7 @@ class LimeLightContext {
         $this->api->connect();
         // generate dynamic function of the given api method
         $function = $this->api->evalMethod();
-        // then call the generated function; returns an array which a parse api response
+        // then call the generated function; returns an array which is a parsed api response
         $orders = $this->api->$function();
 
         // process data

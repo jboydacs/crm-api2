@@ -9,5 +9,5 @@ abstract class CRMApi implements Api {
      * @return mixed
      *
      */
-    public abstract function connect();
+    public abstract function  connect();
 }
